@@ -8,6 +8,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import './index.css'
 
 const Navbar: React.FC = () => {
   const [itemClicked, setItemClicked] = useState("");
@@ -34,15 +35,15 @@ const Navbar: React.FC = () => {
           <div className="w-[100%] h-[10%]  p-[2%] font-bold text-[#b7a85d] ">
             <p>NAVIGATION</p>
           </div>
-          <div className="w-[100%] h-[85%] mt-[5%]  flex flex-wrap justify-start items-start overflow-y-scroll ">
-            <div className="w-[100%] h-[9%]  flex justify-start my-[1%] items-center ">
+          <div className="w-[100%] h-[85%] mt-[5%]  flex flex-wrap justify-start items-start overflow-y-scroll custom-scrollbar ">
+            <div className="w-[100%] h-[9%]  flex justify-start my-[1%] items-center cursor-pointer ">
               <SpeedIcon className="ml-[5%] mr-[2%] text-white " />
               <p className="mb-[0.5%] font-bold text-white ">Dashboard</p>
             </div>
-            <div className="w-[100%]  h-[9%]  flex justify-start items-center my-[1%] ">
+            <div className="w-[100%]  h-[9%]  flex justify-start items-center my-[1%]  ">
               {isDropdownOpen && itemClicked === "Parameters" ? (
                 <ExpandMoreIcon
-                  className="mr-[2%] text-white cursor-pointer "
+                  className="mr-[2%] text-white cursor-pointer  "
                   onClick={() => handleDropdown(false,"Parameters")}
                 />
               ) : (
