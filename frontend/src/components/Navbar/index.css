@@ -8,3 +8,57 @@
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;     /* Firefox */
 }
+
+/* Define the hover effect */
+.navitem:hover .navitem-icon,
+.navitem:hover .navitem-text {
+  transform: scale(1.1); /* Slightly increase size */
+  transition: transform 0.3s ease; /* Smooth animation */
+}
+
+/* This ensures the normal state is without any transformation */
+.navitem .navitem-icon,
+.navitem .navitem-text {
+  transform: scale(1);
+  transition: transform 0.3s ease; /* Ensure smooth transition back to normal */
+}
+
+
+/* Hover effect for the main second-level item */
+.second-level-item:hover .second-level-icon,
+.second-level-item:hover .second-level-text {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+}
+
+/* Ensure default scale for icons and text */
+.second-level-item .second-level-icon,
+.second-level-item .second-level-text {
+    transform: scale(1);
+    transition: transform 0.3s ease;
+}
+
+/* Style for the second-level dropdown container */
+.second-level-dropdown {
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+    transition: opacity 0.3s ease, height 0.3s ease;
+}
+
+/* When the dropdown is open */
+.second-level-dropdown.open {
+    opacity: 1;
+    height: auto;
+}
+
+/* Style for links in the second-level dropdown */
+.second-level-link {
+    text-decoration: none;
+    color: #a9acac;
+    transition: color 0.3s ease;
+}
+
+.second-level-link:hover {
+    color: #b7a85d; /* Color change on hover */
+}
