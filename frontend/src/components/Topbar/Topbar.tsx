@@ -15,7 +15,7 @@ const Topbar: React.FC = () => {
       {/* Logo Section */}
       <div
         className={`w-[15%] h-[100%] text-white ml-[2%] flex justify-center items-center font-bold ${
-          isDarkMode ? 'bg-black' : 'bg-gray-300 text-black'
+          isDarkMode ? 'bg-black' : 'bg-[#2d2d2d]'
         }`}
       >
         <p>Logo and Product Name</p>

@@ -2,6 +2,7 @@ import React from "react";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Link } from "react-router-dom";
+import { useTheme } from "../ThemeContext/ThemeContext"; 
 
 type NavItemProps = {
     navItemName: string;
@@ -41,6 +42,8 @@ const NavItem: React.FC<NavItemProps> = ({
         "Calculation History",
     ];
 
+    const { isDarkMode } = useTheme(); 
+
     return (
         <>
             <div
@@ -49,15 +52,15 @@ const NavItem: React.FC<NavItemProps> = ({
             >
                 {isDropdownOpen && itemClicked === navItemName ? (
                     <ExpandMoreIcon
-                        className="mr-[2%] text-[#a9acac] navitem-icon"
+                        className="mr-[2%] text-[#ffff] navitem-icon"
                     />
                 ) : (
                     <ChevronRightIcon
-                        className="mr-[2%] text-[#a9acac] navitem-icon"
+                        className="mr-[2%] text-[#ffff] navitem-icon"
                     />
                 )}
-                {Icon && <Icon className="mr-[2%] text-[#a9acac] navitem-icon" />}
-                <p className="mb-[0.5%] font-bold text-[#a9acac] navitem-text">{navItemName}</p>
+                {Icon && <Icon className="mr-[2%] text-[#ffff] navitem-icon" />}
+                <p className={`mb-[0.5%] font-bold text-[#ffff] navitem-text`}>{navItemName}</p>
             </div>
             {isDropdownOpen && itemClicked === navItemName && (
                 <div
@@ -82,11 +85,11 @@ const NavItem: React.FC<NavItemProps> = ({
                 onClick={() => handleSecondLevelDropdown(!isSecondLevelDropdownOpen, name)}
             >
                 {isSecondLevelDropdownOpen && secondLevelItemClicked === name ? (
-                    <ExpandMoreIcon className="mr-[2%] ml-[5%] text-[#a9acac] second-level-icon" />
+                    <ExpandMoreIcon className="mr-[2%] ml-[5%] text-[#ffff] second-level-icon" />
                 ) : (
-                    <ChevronRightIcon className="mr-[2%] ml-[5%] text-[#a9acac] second-level-icon" />
+                    <ChevronRightIcon className="mr-[2%] ml-[5%] text-[#ffff] second-level-icon" />
                 )}
-                <p className="mb-[0.5%] font-bold text-[#a9acac] second-level-text">{name}</p>
+                <p className="mb-[0.5%] font-bold text-[#ffff] second-level-text">{name}</p>
             </div>
         );
     }
@@ -98,7 +101,7 @@ const NavItem: React.FC<NavItemProps> = ({
                 className="w-[100%] h-[2rem] my-[1%] flex justify-start items-center second-level-item ml-[8%] "
             >
                 <Link
-                    className="second-level-link ml-[5%] text-[#a9acac] font-bold"
+                    className="second-level-link ml-[5%] text-[#ffff] font-bold"
                     to={
                         name === "New Session"
                             ? "/calculations/new-session"
@@ -123,7 +126,7 @@ const NavItem: React.FC<NavItemProps> = ({
                 className="w-[100%] h-[fit-content] my-[1%] flex justify-start items-center second-level-item ml-[8%]"
             >
                 <Link
-                    className="second-level-link ml-[5%] text-[#a9acac] font-bold"
+                    className="second-level-link ml-[5%] text-[#ffff] font-bold"
                     to="/reporting/financial-statements"
                 >
                     Financial Statements

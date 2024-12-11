@@ -8,7 +8,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 
 import NavItem from "./NavItem";
-import { useTheme } from "../ThemeContext/ThemeContext"; // Import the ThemeContext
+import { useTheme } from "../ThemeContext/ThemeContext"; 
 import "./index.css";
 
 const Navbar: React.FC = () => {
@@ -24,7 +24,7 @@ const Navbar: React.FC = () => {
   const [previousSecondLevelItemClicked, setPreviousSecondLevelItemClicked] =
     useState("");
 
-  const { isDarkMode } = useTheme(); // Use the theme state
+  const { isDarkMode } = useTheme(); 
 
   const handleSecondLevelDropdown = (bool: boolean, item: string) => {
     if (item !== previousSecondLevelItemClicked) {
@@ -62,28 +62,23 @@ const Navbar: React.FC = () => {
   return (
     <div
       className={`w-[25vw] h-[90vh] pt-[5%] ${
-        isDarkMode ? "bg-[#333333] text-white" : "bg-[#e5e4e4] text-black"
+        isDarkMode ? "bg-[#333333] text-white" : "bg-[#898888] text-black"
       }`}
     >
       <div className="w-[100%] h-[100%]">
         <div
-          className={`w-[100%] h-[10%] p-[2%] font-bold ${
-            isDarkMode ? "text-[#f0d78a]" : "text-[#b7a85d]"
-          }`}
+          className={`w-[100%] h-[10%] p-[2%] font-bold text-[#ffff] `}
         >
           <p>NAVIGATION</p>
         </div>
         <div className="w-[100%] h-[85%] mt-[5%] flex flex-wrap justify-start items-start overflow-y-scroll custom-scrollbar">
           <div className="w-[100%] h-[9%] flex justify-start my-[1%] items-center cursor-pointer">
             <SpeedIcon
-              className={`ml-[5%] mr-[2%] ${
-                isDarkMode ? "text-[#c1c1c1]" : "text-[#a9acac]"
-              }`}
+              className={`ml-[5%] mr-[2%] text-[#ffff]
+              `}
             />
             <p
-              className={`mb-[0.5%] font-bold ${
-                isDarkMode ? "text-[#c1c1c1]" : "text-[#a9acac]"
-              }`}
+              className={`mb-[0.5%] font-bold  text-[#ffff]`}
             >
               Dashboard
             </p>
