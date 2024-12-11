@@ -4,6 +4,7 @@ import Parameters from '../UnitOfAccounts/Parameters';
 import NewSession from '../NewSession/NewSession';
 import SessionHistory from '../SessionHistory/SessionHistory';
 import CalculationHistory from '../CalculationHistory/CalculationHistory';
+import FinancialStatements from '../FinancialStatements/FinancialStatements';
 
 const AppRouter: React.FC = () => {
     return (
@@ -13,6 +14,7 @@ const AppRouter: React.FC = () => {
             <Route path='/calculations/new-session' element={<NewSession/>} />
             <Route path='/calculations/session-history' element={<SessionHistory/>} />
             <Route path='/calculations/calculation-history' element={<CalculationHistory/>} />
+            <Route path='/reporting/financial-statements' element={<FinancialStatements/>} />
         </Routes>
     )
 }

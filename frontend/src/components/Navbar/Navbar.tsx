@@ -62,7 +62,7 @@ const Navbar: React.FC = () => {
   return (
     <div
       className={`w-[25vw] h-[90vh] pt-[5%] ${
-        isDarkMode ? "bg-[#333333] text-white" : "bg-[#fffefe] text-black"
+        isDarkMode ? "bg-[#333333] text-white" : "bg-[#e5e4e4] text-black"
       }`}
     >
       <div className="w-[100%] h-[100%]">

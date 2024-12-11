@@ -61,11 +61,13 @@ const NavItem: React.FC<NavItemProps> = ({
             </div>
             {isDropdownOpen && itemClicked === navItemName && (
                 <div
-                    className={`w-[100%] ${isSecondLevelDropdownOpen ? "h-[fit-content]" : "h-[50%]"
+                    className={`w-[100%] "h-[fit-content]"
                         } flex flex-wrap justify-start items-start`}
                 >
                     {navItemName === "Calculations"
                         ? renderCalculationItems()
+                        : navItemName === "Reporting"
+                        ? renderReportingItems()
                         : secondLevelItems.map((item) => renderSecondLevelItem(item))}
                 </div>
             )}
@@ -76,7 +78,7 @@ const NavItem: React.FC<NavItemProps> = ({
         return (
             <div
                 key={name}
-                className="w-[100%] h-[2rem] flex justify-start items-center cursor-pointer second-level-item"
+                className="w-[100%] h-[2rem] my-[1%] flex justify-start items-center cursor-pointer second-level-item"
                 onClick={() => handleSecondLevelDropdown(!isSecondLevelDropdownOpen, name)}
             >
                 {isSecondLevelDropdownOpen && secondLevelItemClicked === name ? (
@@ -93,7 +95,7 @@ const NavItem: React.FC<NavItemProps> = ({
         return secondLevelItemsForCalculation.map((name) => (
             <div
                 key={name}
-                className="w-[100%] h-[2rem] flex justify-start items-center second-level-item ml-[8%] "
+                className="w-[100%] h-[2rem] my-[1%] flex justify-start items-center second-level-item ml-[8%] "
             >
                 <Link
                     className="second-level-link ml-[5%] text-[#a9acac] font-bold"
@@ -113,6 +115,21 @@ const NavItem: React.FC<NavItemProps> = ({
                 </Link>
             </div>
         ));
+    }
+
+    function renderReportingItems() {
+        return (
+            <div
+                className="w-[100%] h-[fit-content] my-[1%] flex justify-start items-center second-level-item ml-[8%]"
+            >
+                <Link
+                    className="second-level-link ml-[5%] text-[#a9acac] font-bold"
+                    to="/reporting/financial-statements"
+                >
+                    Financial Statements
+                </Link>
+            </div>
+        );
     }
 };
 
