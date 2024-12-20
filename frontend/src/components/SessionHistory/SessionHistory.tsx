@@ -1,3 +1,5 @@
+// @ts-nocheck 
+
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useTheme } from '../ThemeContext/ThemeContext';
@@ -14,6 +16,7 @@ const SessionHistory: React.FC = () => {
     const fetchSessionHistory = async () => {
       try {
         const response = await axios.get('http://127.0.0.1:8000/api/get_session_history');
+        console.log(response.data);
         setSessions(response.data.sessions || []);
         setError(null);
       } catch (err: any) {

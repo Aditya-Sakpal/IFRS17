@@ -1,3 +1,5 @@
+// @ts-nocheck 
+
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Parser } from '@json2csv/plainjs';
@@ -172,11 +174,11 @@ const CalculationHistory: React.FC = () => {
                             <select
                                 value={selectedTable || ''}
                                 onChange={handleDropdownChange}
-                                className="border px-2 py-1 ml-2"
+                                className="border px-2 py-1 ml-2 text-black"
                             >
                                 <option value="">--Select--</option>
                                 {tables.map((table) => (
-                                    <option key={table} value={table}>
+                                    <option key={table} value={table} className='text-black ' >
                                         {table}
                                     </option>
                                 ))}

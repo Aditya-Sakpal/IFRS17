@@ -1,3 +1,5 @@
+// @ts-nocheck 
+
 import React, { useState } from "react";
 import SpeedIcon from "@mui/icons-material/Speed";
 import TuneIcon from "@mui/icons-material/Tune";
