@@ -11,7 +11,7 @@ const Auth: React.FC = () => {
         event.preventDefault();
 
         try {
-            const response = await fetch('https://ifrs-17-backend-d8zs.vercel.app/api/login', {
+            const response = await fetch('http://127.0.0.1:8000/api/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -21,8 +21,9 @@ const Auth: React.FC = () => {
                     password: password,
                 }),
             });
-            console.log(response);
-            if (response.statusText === "OK"){
+            const json_response = await response.json();
+            console.log(json_response);
+            if (json_response.status === "approved"){
                 Swal.fire({
                     icon: 'success',
                     title: 'Success',
