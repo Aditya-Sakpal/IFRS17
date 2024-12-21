@@ -17,7 +17,7 @@ const NewSession: React.FC = () => {
       e.preventDefault();
       const runId = uuidv4();
       console.log(runId, typeof runId, reportingDate);
-      const res = await fetch('http://127.0.0.1:8000/api/insert_new_run', {
+      const res = await fetch('https://ifrs-17-backend-d8zs.vercel.app/api/insert_new_run', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

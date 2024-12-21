@@ -30,7 +30,7 @@ const CalculationHistory: React.FC = () => {
     useEffect(() => {
         const fetchCalculationHistory = async () => {
             try {
-                const response = await axios.get('http://127.0.0.1:8000/api/get_calculation_history');
+                const response = await axios.get('https://ifrs-17-backend-d8zs.vercel.app/api/get_calculation_history');
                 const { Run, ...tableData } = response.data.calculationHistory || {};
                 setCalculationHistory(Run || []);
                 setTableData(tableData || {});
