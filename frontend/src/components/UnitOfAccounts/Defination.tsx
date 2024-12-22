@@ -240,7 +240,7 @@ const Defination: React.FC = () => {
                         ))}
                     </div>
                 </div>
-                <div className='w-[100%] h-[80%]  flex justify-center items-center ' >
+                <div className='w-[100%] h-[80%]  flex justify-start pl-[2%] items-center overflow-x-scroll ' >
                     <table className='w-[95%] h-[90%]  bg-[#a9acac]' >
                         <thead className='h-[20%] w-[100%]' >
                             <tr>
