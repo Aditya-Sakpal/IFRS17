@@ -43,7 +43,7 @@ const NewSession: React.FC = () => {
     });
 
     try {
-      const res = await fetch('http://127.0.0.1:8000/api/insert_new_run', {
+      const res = await fetch('https://ifrs17-backend.onrender.com/api/insert_new_run', {
         method: 'POST',
         body: formData,
       });
