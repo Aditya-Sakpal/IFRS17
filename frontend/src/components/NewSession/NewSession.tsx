@@ -1,113 +1,123 @@
-// @ts-nocheck 
-
+// @ts-nocheck
 import React from 'react';
 import Swal from 'sweetalert2';
-import { v4 as uuidv4 } from 'uuid';
 import { useTheme } from '../ThemeContext/ThemeContext'; // Import the ThemeContext hook
+import './index.css';
 
 const NewSession: React.FC = () => {
   const { isDarkMode } = useTheme(); // Access the theme context
+  const [csvFile, setCsvFile] = React.useState<File | null>(null);
+  const [runName, setRunName] = React.useState<string>(''); // State for run name
 
-  const [runName, setRunName] = React.useState<string>('naayknpanfpknepkp a raan');
-  const [confId, setConfId] = React.useState<string>('ace3a15f-7306-4bb3-ad25-ab4251d6dfff');
-  const [reportingDate, setReportingDate] = React.useState<string>('2024-11-27');
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files ? e.target.files[0] : null;
+    setCsvFile(file);
+  };
 
-  const insertRun = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleRunNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRunName(e.target.value); // Update run name state
+  };
+
+  const uploadCsv = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!csvFile || !runName.trim()) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Missing Input',
+        text: 'Please select a CSV file and provide a run name.',
+      });
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', csvFile);
+    formData.append('run_name', runName); // Add run name to form data
+
+    Swal.fire({
+      title: 'Uploading...',
+      text: 'Please wait while your file is being uploaded.',
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+
     try {
-      e.preventDefault();
-      const runId = uuidv4();
-      console.log(runId, typeof runId, reportingDate);
-      const res = await fetch('https://ifrs-17-backend-d8zs.vercel.app/api/insert_new_run', {
+      const res = await fetch('http://127.0.0.1:8000/api/insert_new_run', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify([
-          {
-            Run_ID: runId,
-            Run_Name: runName,
-            Conf_ID: confId,
-            Reporting_Date: reportingDate,
-            Created_By: 'User1',
-            Created_Date: '2024-11-17 06:28:00.136046+05:30',
-          },
-        ]),
+        body: formData,
       });
 
-      if (res.status === 201) {
+      const data = await res.json();
+      console.log(data);
+      localStorage.setItem(data['run_id'], data['data']); 
+
+      Swal.close(); // Close the loading popup
+
+      if (res.ok) {
         Swal.fire({
           icon: 'success',
-          title: 'Run Created',
-          text: 'Run has been created successfully',
+          title: 'Uploaded',
+          text: 'CSV file uploaded successfully.',
         });
       } else {
+        const errorMsg = await res.text();
         Swal.fire({
           icon: 'error',
-          title: 'Failed',
-          text: 'Failed to create run',
+          title: 'Upload Failed',
+          text: errorMsg || 'An error occurred during the upload.',
         });
       }
     } catch (err) {
-      console.log(err);
+      Swal.close(); // Close the loading popup in case of error
+      console.error(err);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Failed to upload the file. Please try again.',
+      });
     }
   };
 
   return (
     <div
-      className={`w-[100%] h-[100%]  border border-gray-400 ${
+      className={`w-[100%] h-[100%] border border-gray-400  ${
         isDarkMode ? 'bg-[#4f4e4e] text-white' : 'bg-[#f5f5f5] text-black'
       } border-black`}
     >
       <div className="w-[100%] h-[10%] flex flex-col justify-center">
-        <p className="text-3xl ml-[2%]">New Session</p>
+        <p className="text-3xl ml-[2%]">Upload CSV</p>
       </div>
       <div className="w-[100%] h-[90%]">
-        <form action="" className="w-[100%] h-[100%]" onSubmit={insertRun}>
-          <div className="w-[100%] h-[20%] flex">
-            <div className="w-[15%] h-[100%] flex flex-col justify-between items-start pl-[2%] py-[2%]">
-              <p className="text-xl">Run Name</p>
-              <input
-                type="text"
-                className={`w-[90%] h-[40%] rounded-md ${
-                  isDarkMode ? 'bg-gray-700 text-white' : 'bg-gray-200 text-black'
-                }`}
-                value={runName}
-                onChange={(e) => setRunName(e.target.value)}
-              />
-            </div>
-            <div className="w-[15%] h-[100%] flex flex-col justify-between items-start pl-[2%] py-[2%]">
-              <p className="text-xl">Conf Id</p>
-              <input
-                type="text"
-                className={`w-[90%] h-[40%] rounded-md ${
-                  isDarkMode ? 'bg-gray-700 text-white' : 'bg-gray-200 text-black'
-                }`}
-                defaultValue={confId}
-                disabled={true}
-              />
-            </div>
-            <div className="w-[15%] h-[100%] flex flex-col justify-between items-start pl-[2%] py-[2%]">
-              <p className="text-xl">Reporting Date</p>
-              <input
-                type="date"
-                className={`w-[90%] h-[40%] rounded-md ${
-                  isDarkMode ? 'bg-gray-700 text-white' : 'bg-gray-200 text-black'
-                }`}
-                value={reportingDate}
-                onChange={(e) => setReportingDate(e.target.value)}
-              />
-            </div>
-          </div>
-          <div className="w-[100%] h-[20%] flex flex-col justify-center pl-[2%]">
-            <button
-              className={`${
-                isDarkMode ? 'bg-blue-700' : 'bg-blue-500'
-              } text-white w-[10%] h-[30%] rounded-lg`}
-              type="submit"
-            >
-              Run
-            </button>
-          </div>
+        <form
+          className="w-[100%] h-[100%] flex flex-col justify-start items-start pl-[1.5%]"
+          onSubmit={uploadCsv}
+        >
+          <input
+            type="text"
+            placeholder="Enter Run Name"
+            value={runName}
+            onChange={handleRunNameChange}
+            className={`w-[30%] h-[5%] mb-4 p-[2%] rounded-md ${
+              isDarkMode ? 'bg-gray-700 text-white' : 'bg-gray-200 text-black'
+            }`}
+          />
+          <input
+            type="file"
+            accept=".csv"
+            className={`w-[30%] mb-4 p-[2%] rounded-md cursor-pointer ${
+              isDarkMode ? 'bg-gray-700 text-white' : 'bg-gray-200 text-black'
+            }`}
+            onChange={handleFileChange}
+          />
+          <button
+            className={`${
+              isDarkMode ? 'bg-blue-700' : 'bg-blue-500'
+            } text-white w-[20%] p-[1%] rounded-lg`}
+            type="submit"
+          >
+            Upload
+          </button>
         </form>
       </div>
     </div>

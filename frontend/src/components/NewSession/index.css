@@ -1,0 +1,34 @@
+.swal2-popup{
+    background-color: #4f4e4e !important;
+}
+.swal2-success-circular-line-left{
+    background-color: #4f4e4e !important;
+}
+.swal2-success-circular-line-right{
+    background-color: #4f4e4e !important;
+}
+.swal2-success-fix{
+    background-color: #4f4e4e !important;
+}
+.swal2-title{
+    color: #fff !important;
+}
+.swal2-html-container{
+    color: #fff !important;
+}
+
+/* Add to your CSS file or include in a <style> tag */
+.loader {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-top-color: #3498db;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }

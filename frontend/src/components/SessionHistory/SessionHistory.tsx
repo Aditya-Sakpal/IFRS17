@@ -15,7 +15,7 @@ const SessionHistory: React.FC = () => {
   useEffect(() => {
     const fetchSessionHistory = async () => {
       try {
-        const response = await axios.get('https://ifrs-17-backend-d8zs.vercel.app/api/get_session_history');
+        const response = await axios.get('http://127.0.0.1:8000/api/get_session_history');
         console.log(response.data);
         setSessions(response.data.sessions || []);
         setError(null);

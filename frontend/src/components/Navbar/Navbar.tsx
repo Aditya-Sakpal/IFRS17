@@ -10,7 +10,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 
 import NavItem from "./NavItem";
-import { useTheme } from "../ThemeContext/ThemeContext"; 
+import { useTheme } from "../ThemeContext/ThemeContext";
 import "./index.css";
 
 const Navbar: React.FC = () => {
@@ -26,7 +26,10 @@ const Navbar: React.FC = () => {
   const [previousSecondLevelItemClicked, setPreviousSecondLevelItemClicked] =
     useState("");
 
-  const { isDarkMode } = useTheme(); 
+  const [activeTab, setActiveTab] = useState("GMM");
+
+
+  const { isDarkMode } = useTheme();
 
   const handleSecondLevelDropdown = (bool: boolean, item: string) => {
     if (item !== previousSecondLevelItemClicked) {
@@ -61,13 +64,35 @@ const Navbar: React.FC = () => {
     { name: "Transition", icon: AssignmentTurnedInIcon },
   ];
 
+
+  const tabs = [
+    { id: "GMM", label: "GMM", roundedClass: "rounded-l-3xl" },
+    { id: "PAA", label: "PAA", roundedClass: "rounded-r-3xl" },
+  ];
+
   return (
     <div
-      className={`w-[25vw] h-[90vh] pt-[5%] ${
-        isDarkMode ? "bg-[#333333] text-white" : "bg-[#898888] text-black"
-      }`}
+      className={`w-[25vw] h-[90vh] pt-[2%]  ${isDarkMode ? "bg-[#333333] text-white" : "bg-[#898888] text-black"
+        }`}
     >
-      <div className="w-[100%] h-[100%]">
+      <div className="w-[100%] h-[5%] flex items-center justify-center px-[2%] " >
+        {tabs.map((tab) => (
+          <div
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={`w-[50%] h-[100%] flex justify-center items-center text-center border border-white cursor-pointer text-md font-semibold transition-transform duration-300 ${activeTab === tab.id
+                ? `bg-white text-black scale-105 ${tab.roundedClass}`
+                : `bg-transparent text-white scale-100 ${tab.roundedClass}`
+              }`}
+            style={{
+              transition: "background-color 0.3s, transform 0.3s",
+            }}
+          >
+            <p>{tab.label}</p>
+          </div>
+        ))}
+      </div>
+      <div className="w-[100%] h-[100%] pt-[3%] ">
         <div
           className={`w-[100%] h-[10%] p-[2%] font-bold text-[#ffff] `}
         >
