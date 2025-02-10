@@ -8,6 +8,16 @@ const SessionHistory: React.FC = () => {
   const [sessions, setSessions] = useState<{ Run_ID: string; Run_Name: string; Reporting_Date: string }[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [filteredSessions, setFilteredSessions] = useState<{ Run_ID: string; Run_Name: string; Reporting_Date: string }[]>([]);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+
+  useEffect(() => {
+    setFilteredSessions(
+      sessions.filter((session) =>
+        session.Run_Name.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    );
+  }, [searchTerm, sessions]);
 
   // Access the theme context
   const { isDarkMode } = useTheme();
@@ -29,6 +39,8 @@ const SessionHistory: React.FC = () => {
     fetchSessionHistory();
   }, []);
 
+
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -39,12 +51,18 @@ const SessionHistory: React.FC = () => {
 
   return (
     <div
-      className={`w-full h-full p-4 ${
-        isDarkMode ? 'bg-[#333] text-white' : 'bg-[#f9f9f9] text-black'
-      }`}
+      className={`w-full h-full p-4 ${isDarkMode ? 'bg-[#333] text-white' : 'bg-[#f9f9f9] text-black'
+        }`}
     >
       <h2 className="text-xl h-[5%] font-bold mb-4">Session History</h2>
-      {sessions.length === 0 ? (
+      <input
+        type="text"
+        placeholder="Filter by Run Name"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className={`w-full p-2 mb-4 border ${isDarkMode ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300'}`}
+      />
+      {filteredSessions.length === 0 ? (
         <div>No sessions found for today's date</div>
       ) : (
         <div className="w-full h-[95%] overflow-hidden">
@@ -60,7 +78,7 @@ const SessionHistory: React.FC = () => {
           <div className="h-[90%] overflow-y-scroll">
             <table className={`table-auto border-collapse border w-full ${isDarkMode ? 'border-gray-700' : 'border-gray-400'}`}>
               <tbody>
-                {sessions.map((session) => (
+                {filteredSessions.map((session) => (
                   <tr key={session.Run_ID} className={isDarkMode ? 'bg-gray-800' : 'bg-white'}>
                     <td className="border px-4 py-2 w-[40%]">{session.Run_ID}</td>
                     <td className="border px-4 py-2 w-[30%]">{session.Run_Name}</td>

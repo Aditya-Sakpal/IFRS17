@@ -8,6 +8,9 @@ const NewSession: React.FC = () => {
   const { isDarkMode } = useTheme(); // Access the theme context
   const [csvFile, setCsvFile] = React.useState<File | null>(null);
   const [runName, setRunName] = React.useState<string>(''); // State for run name
+  const [reportingDate, setReportingDate] = React.useState<string>(
+    new Date().toISOString().split('T')[0]
+  ); // Default to today's date
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : null;
@@ -18,21 +21,71 @@ const NewSession: React.FC = () => {
     setRunName(e.target.value); // Update run name state
   };
 
+  const handleReportingDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setReportingDate(e.target.value); // Update reporting date state
+  };
+
+  const validateCSV = async (file: File) => {
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      const res = await fetch('https://ifrs17-backend.onrender.com/api/validate_csv', {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await res.json();
+      return {status : res.status, validationData : data }
+    } catch (err) {
+      console.error(err);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Failed to validate the CSV file. Please try again.',
+      });
+    }
+  };
+
   const uploadCsv = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!csvFile || !runName.trim()) {
+    if (!csvFile || !runName.trim() || !reportingDate.trim()) {
       Swal.fire({
         icon: 'error',
         title: 'Missing Input',
-        text: 'Please select a CSV file and provide a run name.',
+        text: 'Please select a CSV file, provide a run name, and select a reporting date.',
       });
+      return;
+    }
+
+    const response = await validateCSV(csvFile);
+
+    if(response.status !== 200){
+      console.log(response);
+      Swal.fire({
+        icon: 'error',
+        title: 'Validation Failed',
+        text: `The CSV file is invalid. ${response.validationData.error} `,
+      });
+      return;
+    }
+
+    const confirmation = await Swal.fire({
+      title: 'Confirm Upload',
+      text: 'Are you sure you want to upload this file?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+    });
+    
+    if (!confirmation.isConfirmed) {
       return;
     }
 
     const formData = new FormData();
     formData.append('file', csvFile);
     formData.append('run_name', runName); // Add run name to form data
+    formData.append('reporting_date', reportingDate); // Add reporting date
 
     Swal.fire({
       title: 'Uploading...',
@@ -49,8 +102,7 @@ const NewSession: React.FC = () => {
       });
 
       const data = await res.json();
-      console.log(data);
-      localStorage.setItem(data['run_id'], data['data']); 
+      localStorage.setItem(data['run_id'], data['data']);
 
       Swal.close(); // Close the loading popup
 
@@ -99,6 +151,14 @@ const NewSession: React.FC = () => {
             value={runName}
             onChange={handleRunNameChange}
             className={`w-[30%] h-[5%] mb-4 p-[2%] rounded-md ${
+              isDarkMode ? 'bg-gray-700 text-white' : 'bg-gray-200 text-black'
+            }`}
+          />
+          <input
+            type="date"
+            value={reportingDate}
+            onChange={handleReportingDateChange}
+            className={`w-[30%] mb-4 p-[2%] rounded-md cursor-pointer ${
               isDarkMode ? 'bg-gray-700 text-white' : 'bg-gray-200 text-black'
             }`}
           />

@@ -8,12 +8,14 @@ import { useTheme } from '../ThemeContext/ThemeContext';
 const CalculationHistory: React.FC = () => {
     const { isDarkMode } = useTheme();
     const [calculationHistory, setCalculationHistory] = useState<{ Run_ID: string; Run_Name: string; Reporting_Date: string }[]>([]);
+    const [filteredHistory, setFilteredHistory] = useState(calculationHistory);
     const [tableData, setTableData] = useState<any>({});
     const [selectedCalculation, setSelectedCalculation] = useState<any>(null);
     const [selectedTable, setSelectedTable] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [activeTab, setActiveTab] = useState<string>("IFRS17");
+    const [searchTerm, setSearchTerm] = useState<string>("");
 
     const IFRS17_tables = [
         'Coverage_Units_Rec',
@@ -32,12 +34,22 @@ const CalculationHistory: React.FC = () => {
     };
 
     useEffect(() => {
+        // Filter records based on search term
+        const filtered = calculationHistory.filter(record =>
+            record.Run_Name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setFilteredHistory(filtered);
+    }, [searchTerm, calculationHistory]);
+
+
+    useEffect(() => {
         const fetchCalculationHistory = async () => {
             try {
                 const response = await axios.get('https://ifrs17-backend.onrender.com/api/get_calculation_history');
                 console.log(response)
                 const { Run, ...tableData } = response.data.calculationHistory || {};
                 setCalculationHistory(Run || []);
+                setFilteredHistory(Run || []);
                 setTableData(tableData || {});
                 setError(null);
             } catch (err: any) {
@@ -148,31 +160,51 @@ const CalculationHistory: React.FC = () => {
     const renderTable = (data: any[]) => {
         if (!data.length) return <div>No data found</div>;
 
+        // Get column names and filter out unwanted ones
+        const filteredColumns = Object.keys(data[0]).filter(
+            (col) => col !== "Run_ID" && !col.endsWith("_ID") && col.toLowerCase() !== "index"
+        );
+
+        // Transpose the data: each column becomes a row
+        const transposedData = filteredColumns.map((col) => {
+            return [col, ...data.map((row) => row[col])];
+        });
+
         return (
-            <table className={`table-auto border-collapse border w-full ${isDarkMode ? 'border-gray-700' : 'border-gray-400'}`}>
-                <thead>
-                    <tr className={`${isDarkMode ? 'bg-gray-700' : 'bg-gray-200'}`}>
-                        {Object.keys(data[0]).map((col) => (
-                            <th key={col} className="border px-4 py-2">
-                                {col}
+            <div className="w-[90vw] overflow-x-auto">
+                <table className={`table-auto border-collapse border w-full ${isDarkMode ? 'border-gray-700' : 'border-gray-400'}`}>
+                    <thead>
+                        <tr className={`${isDarkMode ? 'bg-gray-700' : 'bg-gray-200'}`}>
+                            <th className="border px-4 py-2 sticky bg-gray-700 left-0 z-10">
+                                Field
                             </th>
-                        ))}
-                    </tr>
-                </thead>
-                <tbody>
-                    {data.map((row, index) => (
-                        <tr key={index}>
-                            {Object.values(row).map((value, colIndex) => (
-                                <td key={colIndex} className="border px-4 py-2">
-                                    {value}
-                                </td>
+                            {data.map((_, index) => (
+                                <th key={index} className="border px-4 py-2">
+                                    Record {index + 1}
+                                </th>
                             ))}
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {transposedData.map((row, rowIndex) => (
+                            <tr key={rowIndex}>
+                                {row.map((value, colIndex) => (
+                                    <td
+                                        key={colIndex}
+                                        className={`border px-4 py-2 ${colIndex === 0 ? 'sticky left-0 bg-gray-700 z-10 font-semibold' : ''}`}
+                                    >
+                                        {value}
+                                    </td>
+                                ))}
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         );
     };
+
+
 
 
     const renderComparisonView = () => {
@@ -233,7 +265,14 @@ const CalculationHistory: React.FC = () => {
     return (
         <div className={`w-full h-full p-4 ${isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'}`}>
             <h2 className="text-xl h-[5%] font-bold mb-4">Calculation History</h2>
-            {calculationHistory.length === 0 ? (
+            <input
+                type="text"
+                placeholder="Filter by Run Name"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className={`w-full p-2 mb-4 border ${isDarkMode ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300'}`}
+            />
+            {filteredHistory.length === 0 ? (
                 <div>No calculations found</div>
             ) : (
                 <div className="w-full h-[95%] overflow-hidden">
@@ -249,7 +288,7 @@ const CalculationHistory: React.FC = () => {
                     <div className="h-[90%] overflow-y-scroll">
                         <table className="table-auto border-collapse border w-full">
                             <tbody>
-                                {calculationHistory.map((calculation) => (
+                                {filteredHistory.map((calculation) => (
                                     <tr
                                         key={calculation.Run_ID}
                                         onClick={() => setSelectedCalculation(calculation)}
@@ -288,8 +327,8 @@ const CalculationHistory: React.FC = () => {
                                                 key={tab}
                                                 onClick={() => setActiveTab(tab)}
                                                 className={`w-[20%] h-[100%] border border-white flex text-md justify-center items-center text-center font-semibold mx-[1%] cursor-pointer rounded-tl-2xl rounded-tr-2xl transition-transform duration-300 ${activeTab === tab
-                                                        ? "bg-white scale-110 text-black"
-                                                        : "bg-transparent scale-100 text-white"
+                                                    ? "bg-white scale-110 text-black"
+                                                    : "bg-transparent scale-100 text-white"
                                                     }`}
                                             >
                                                 <p>{tab}</p>
