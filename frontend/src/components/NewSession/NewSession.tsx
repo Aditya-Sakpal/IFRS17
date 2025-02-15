@@ -134,7 +134,7 @@ const NewSession: React.FC = () => {
   return (
     <div
       className={`w-[100%] h-[100%] border border-gray-400  ${
-        isDarkMode ? 'bg-[#4f4e4e] text-white' : 'bg-[#f5f5f5] text-black'
+        isDarkMode ? 'bg-[#843535] text-white' : 'bg-[#f5f5f5] text-black'
       } border-black`}
     >
       <div className="w-[100%] h-[10%] flex flex-col justify-center">
