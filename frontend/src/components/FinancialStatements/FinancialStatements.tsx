@@ -98,9 +98,9 @@ const FinancialStatements: React.FC = () => {
                         <table className="w-full border-collapse">
                             <thead>
                                 <tr>
-                                    <th className="p-2 border bg-gray-200 sticky left-0">Fields</th>
+                                    <th className="p-2 border bg-gray-200 sticky left-0">Time Period</th>
                                     {filteredStatProfloss.map((_, index) => (
-                                        <th key={index} className="p-2 border bg-gray-200">Record {index + 1}</th>
+                                        <th key={index} className="p-2 border bg-gray-200">{index + 1}</th>
                                     ))}
                                 </tr>
                             </thead>

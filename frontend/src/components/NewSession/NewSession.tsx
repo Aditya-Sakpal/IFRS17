@@ -34,6 +34,11 @@ const NewSession: React.FC = () => {
         body: formData,
       });
       const data = await res.json();
+
+      if(res.status === 200){
+        return {status : res.status, validationData : data, noOfInputs : data['no_of_inputs'] }
+      }
+
       return {status : res.status, validationData : data }
     } catch (err) {
       console.error(err);
@@ -71,7 +76,10 @@ const NewSession: React.FC = () => {
 
     const confirmation = await Swal.fire({
       title: 'Confirm Upload',
-      text: 'Are you sure you want to upload this file?',
+      html: `Your Run Name: <b>${runName}</b> <br/><br/>
+             Your Reporting Date: <b>${reportingDate}</b> <br/><br/>
+             No of inputs: <b>${response?.noOfInputs}</b> <br/><br/>
+             Are you sure you want to upload this file?`,
       icon: 'question',
       showCancelButton: true,
       confirmButtonText: 'Yes',

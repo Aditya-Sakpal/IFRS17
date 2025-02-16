@@ -46,7 +46,6 @@ const CalculationHistory: React.FC = () => {
         const fetchCalculationHistory = async () => {
             try {
                 const response = await axios.get('https://ifrs17-backend.onrender.com/api/get_calculation_history');
-                console.log(response)
                 const { Run, ...tableData } = response.data.calculationHistory || {};
                 setCalculationHistory(Run || []);
                 setFilteredHistory(Run || []);
@@ -176,11 +175,11 @@ const CalculationHistory: React.FC = () => {
                     <thead>
                         <tr className={`${isDarkMode ? 'bg-gray-700' : 'bg-gray-200'}`}>
                             <th className="border px-4 py-2 sticky bg-gray-700 left-0 z-10">
-                                Field
+                                Time Period
                             </th>
                             {data.map((_, index) => (
                                 <th key={index} className="border px-4 py-2">
-                                    Record {index + 1}
+                                    {index + 1}
                                 </th>
                             ))}
                         </tr>
