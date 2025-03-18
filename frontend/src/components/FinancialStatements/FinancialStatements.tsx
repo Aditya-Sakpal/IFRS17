@@ -17,7 +17,7 @@ const FinancialStatements: React.FC = () => {
     const fetchStatProfloss = async () => {
         try {
             const response = await axios.get(
-                "https://ifrs17-backend.onrender.com/api/get_calculation_history"
+                "https://ifrs17-backend-sbyv.onrender.com/api/get_calculation_history"
             );
             const runData = response.data.calculationHistory.Run || [];
             const statProflossData =

@@ -78,7 +78,7 @@ const SessionHistory: React.FC = () => {
   useEffect(() => {
     const fetchSessionHistory = async () => {
       try {
-        const response = await axios.get('https://ifrs17-backend.onrender.com/api/get_session_history');
+        const response = await axios.get('https://ifrs17-backend-sbyv.onrender.com/api/get_session_history');
         console.log('API Response:', response.data);
 
         if (!response.data.sessions || !response.data.sessionData) {

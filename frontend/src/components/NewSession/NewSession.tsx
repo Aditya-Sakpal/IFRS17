@@ -29,7 +29,7 @@ const NewSession: React.FC = () => {
     try {
       const formData = new FormData();
       formData.append('file', file);
-      const res = await fetch('https://ifrs17-backend.onrender.com/api/validate_csv', {
+      const res = await fetch('https://ifrs17-backend-sbyv.onrender.com/api/validate_csv', {
         method: 'POST',
         body: formData,
       });
@@ -104,7 +104,7 @@ const NewSession: React.FC = () => {
     });
 
     try {
-      const res = await fetch('https://ifrs17-backend.onrender.com/api/insert_new_run', {
+      const res = await fetch('https://ifrs17-backend-sbyv.onrender.com/api/insert_new_run', {
         method: 'POST',
         body: formData,
       });

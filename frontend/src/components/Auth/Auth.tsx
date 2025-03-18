@@ -11,7 +11,7 @@ const Auth: React.FC = () => {
         event.preventDefault();
 
         try {
-            const response = await fetch('https://ifrs17-backend.onrender.com/api/login', {
+            const response = await fetch('https://ifrs17-backend-sbyv.onrender.com/api/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -45,7 +45,7 @@ const CalculationHistory: React.FC = () => {
     useEffect(() => {
         const fetchCalculationHistory = async () => {
             try {
-                const response = await axios.get('https://ifrs17-backend.onrender.com/api/get_calculation_history');
+                const response = await axios.get('https://ifrs17-backend-sbyv.onrender.com/api/get_calculation_history');
                 const { Run, ...tableData } = response.data.calculationHistory || {};
                 setCalculationHistory(Run || []);
                 setFilteredHistory(Run || []);
